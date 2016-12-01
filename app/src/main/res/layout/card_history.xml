@@ -19,12 +19,32 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_history_count_total"
+        android:id="@+id/tv_history_count_week"
         android:textSize="12sp"
         android:layout_marginTop="2dp"
         android:layout_below="@+id/tv_history_username"
         android:layout_alignLeft="@+id/tv_history_username"
         android:layout_alignStart="@+id/tv_history_username" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_history_count_month"
+        android:textSize="12sp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/tv_history_username"
+        android:layout_toRightOf="@id/tv_history_count_week" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_history_count_total"
+        android:textSize="12sp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="18dp"
+        android:layout_below="@+id/tv_history_username"
+        android:layout_toRightOf="@id/tv_history_count_month" />
 
     <View
         android:layout_width="match_parent"

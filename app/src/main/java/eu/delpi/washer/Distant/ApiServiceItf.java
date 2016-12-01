@@ -2,8 +2,9 @@ package eu.delpi.washer.Distant;
 
 import java.util.List;
 
-import eu.delpi.washer.Model.Remote.UserRemote;
+import eu.delpi.washer.Model.User;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
@@ -14,15 +15,15 @@ import retrofit2.http.POST;
 public interface ApiServiceItf {
 
     @GET("/user/names")
-    Call<List<UserRemote>> fetchNames();
+    Call<List<User>> getHistory();
 
     @GET("/user/washer")
     Call<String> getNext();
 
     @POST("/user/washer")
-    Call<String> postWash(UserRemote userRemote);
+    Call<String> postWash(@Body User user);
 
     @GET("/user")
-    Call<List<UserRemote>> getUsers();
+    Call<List<User>> getUsers();
 
 }

@@ -3,10 +3,8 @@ package eu.delpi.washer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -15,14 +13,11 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import eu.delpi.washer.Distant.ApiServiceItf;
-import eu.delpi.washer.Model.Remote.UserRemote;
+import eu.delpi.washer.Model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.2.6:8080")
+                .baseUrl("http://192.168.1.70:8080")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         serviceApi = retrofit.create(ApiServiceItf.class);
@@ -79,25 +74,26 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    @OnClick(R.id.button_done)
+    protected void onClickDone(){
+
+        User u = new User();
+        u.setName(tvWasherName.getText().toString());
+
+        Call<String> call = serviceApi.postWash(u);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                tvWasherName.setText(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

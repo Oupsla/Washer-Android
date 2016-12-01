@@ -7,16 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import butterknife.BindView;
 import eu.delpi.washer.Model.User;
 import eu.delpi.washer.R;
 
 /**
  * Created by nicolas on 26/11/16.
  */
-
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
     private Context mContext;
     private List<User> userList;
@@ -25,14 +26,17 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
         TextView tvUsername;
         TextView tvTotalCount;
+        TextView tvMonthCount;
+        TextView tvWeekCount;
 
         public ViewHolder(View view) {
             super(view);
             tvUsername = (TextView) view.findViewById(R.id.tv_history_username);
             tvTotalCount = (TextView) view.findViewById(R.id.tv_history_count_total);
+            tvMonthCount = (TextView) view.findViewById(R.id.tv_history_count_month);
+            tvWeekCount = (TextView) view.findViewById(R.id.tv_history_count_week);
         }
     }
 
@@ -55,10 +59,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         holder.tvUsername.setText(userList.get(position).getName());
-        holder.tvTotalCount.setText("" + userList.get(position).getListWasherDone().size());
+        holder.tvWeekCount.setText("Week : " + userList.get(position).getTotalMonth());
+        holder.tvMonthCount.setText("Month : " + userList.get(position).getTotalMonth());
+        holder.tvTotalCount.setText("Total : " + userList.get(position).getTotalCount());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
