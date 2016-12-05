@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.70:8080")
+                .baseUrl("https://washerapi.herokuapp.com")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
         serviceApi = retrofit.create(ApiServiceItf.class);
@@ -80,7 +80,28 @@ public class MainActivity extends AppCompatActivity {
         User u = new User();
         u.setName(tvWasherName.getText().toString());
 
-        Call<String> call = serviceApi.postWash(u);
+        Call<String> call = serviceApi.postWash(u, false);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                tvWasherName.setText(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    @OnClick(R.id.button_afk)
+    protected void onClickAfk(){
+
+        User u = new User();
+        u.setName(tvWasherName.getText().toString());
+
+        Call<String> call = serviceApi.postWash(u, true);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
